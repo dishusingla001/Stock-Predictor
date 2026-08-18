@@ -1,4 +1,5 @@
 import yfinance as yf
+import pandas as pd
 import os
 
 stocks = [
@@ -23,11 +24,11 @@ for ticker in stocks:
         progress=False
     )
 
-    # Convert MultiIndex columns into normal columns
-    if isinstance(data.columns, __import__("pandas").MultiIndex):
+    # Handle MultiIndex columns
+    if isinstance(data.columns, pd.MultiIndex):
         data.columns = data.columns.get_level_values(0)
 
-    # Convert index (Date) into a normal column
+    # Convert Date index into a normal column
     data.reset_index(inplace=True)
 
     filename = f"data/raw/{ticker.replace('.NS', '')}.csv"
