@@ -205,3 +205,43 @@ for stock in stocks:
 print("\n================================")
 print("Feature engineering completed!")
 print("================================")
+
+
+# ==========================================
+# PHASE 3 - ML DATASET PREPARATION
+# ==========================================
+
+for stock in stocks:
+
+    data = pd.read_csv(
+        f"data/processed/{stock}_features.csv"
+    )
+
+    # 1. Create Target
+    # 1 = tomorrow's Close is higher
+    # 0 = tomorrow's Close is lower or equal
+    data["Target"] = (
+        data["Close"].shift(-1) > data["Close"]
+    ).astype(int)
+
+    # 2. Remove the final row
+    # because there is no tomorrow's price
+    data = data.iloc[:-1]
+
+    # 3. Remove rows containing NaN
+    # caused by technical indicators
+    data = data.dropna()
+
+    # 4. Save ML-ready dataset
+    data.to_csv(
+        f"data/processed/{stock}_ML.csv",
+        index=False
+    )
+
+    # 5. Check the dataset
+    print(f"\n========== {stock} ML DATASET ==========")
+    print(data.head())
+    print("\nDataset Shape:")
+    print(data.shape)
+    print("\nTarget Distribution:")
+    print(data["Target"].value_counts())
