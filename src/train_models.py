@@ -36,6 +36,8 @@ stocks = [
     "ICICIBANK"
 ]
 
+results = []
+
 
 for stock in stocks:
 
@@ -141,6 +143,16 @@ for stock in stocks:
     y_probability = logistic_model.predict_proba(X_test_scaled)
     up_probability = y_probability[:, 1]
 
+    results.append({
+        "Stock": stock,
+        "Model": "Logistic Regression",
+        "Accuracy": accuracy_score(y_test, y_pred),
+        "Precision": precision_score(y_test, y_pred, zero_division=0),
+        "Recall": recall_score(y_test, y_pred, zero_division=0),
+        "F1": f1_score(y_test, y_pred, zero_division=0),
+        "ROC-AUC": roc_auc_score(y_test, up_probability)
+    })
+
     print("\n========== LOGISTIC REGRESSION ==========")
     print(f"Accuracy : {accuracy_score(y_test, y_pred):.4f}")
     print(f"Precision: {precision_score(y_test, y_pred, zero_division=0):.4f}")
@@ -172,6 +184,16 @@ for stock in stocks:
     rf_pred = random_forest_model.predict(X_test)
     rf_probability = random_forest_model.predict_proba(X_test)
     rf_up_probability = rf_probability[:, 1]
+
+    results.append({
+        "Stock": stock,
+        "Model": "Random Forest",
+        "Accuracy": accuracy_score(y_test, rf_pred),
+        "Precision": precision_score(y_test, rf_pred, zero_division=0),
+        "Recall": recall_score(y_test, rf_pred, zero_division=0),
+        "F1": f1_score(y_test, rf_pred, zero_division=0),
+        "ROC-AUC": roc_auc_score(y_test, rf_up_probability)
+    })
 
     print("\n========== RANDOM FOREST ==========")
     print(f"Accuracy : {accuracy_score(y_test, rf_pred):.4f}")
@@ -206,6 +228,16 @@ for stock in stocks:
     xgb_probability = xgb_model.predict_proba(X_test)
     xgb_up_probability = xgb_probability[:, 1]
 
+    results.append({
+        "Stock": stock,
+        "Model": "XGBoost",
+        "Accuracy": accuracy_score(y_test, xgb_pred),
+        "Precision": precision_score(y_test, xgb_pred, zero_division=0),
+        "Recall": recall_score(y_test, xgb_pred, zero_division=0),
+        "F1": f1_score(y_test, xgb_pred, zero_division=0),
+        "ROC-AUC": roc_auc_score(y_test, xgb_up_probability)
+    })
+
     print("\n========== XGBOOST ==========")
     print(f"Accuracy : {accuracy_score(y_test, xgb_pred):.4f}")
     print(f"Precision: {precision_score(y_test, xgb_pred, zero_division=0):.4f}")
@@ -218,3 +250,66 @@ for stock in stocks:
 
     print("\nClassification Report:")
     print(classification_report(y_test, xgb_pred, zero_division=0))
+
+
+# ==========================================
+# 8. Model Comparison
+# ==========================================
+
+results_df = pd.DataFrame(results)
+
+print("\n==========================================")
+print("              MODEL COMPARISON")
+print("==========================================")
+print(results_df.to_string(index=False))
+
+results_df.to_csv(
+    "data/processed/model_results.csv",
+    index=False
+)
+
+best_models = (
+    results_df
+    .sort_values(
+        ["Stock", "ROC-AUC"],
+        ascending=[True, False]
+    )
+    .groupby("Stock")
+    .first()
+    .reset_index()
+)
+
+print("\n==========================================")
+print("          BEST MODEL PER STOCK")
+print("==========================================")
+print(
+    best_models[
+        [
+            "Stock",
+            "Model",
+            "Accuracy",
+            "Precision",
+            "Recall",
+            "F1",
+            "ROC-AUC"
+        ]
+    ].to_string(index=False)
+)
+
+average_results = (
+    results_df
+    .groupby("Model")[[
+        "Accuracy",
+        "Precision",
+        "Recall",
+        "F1",
+        "ROC-AUC"
+    ]]
+    .mean()
+    .sort_values("ROC-AUC", ascending=False)
+)
+
+print("\n==========================================")
+print("        AVERAGE MODEL PERFORMANCE")
+print("==========================================")
+print(average_results.to_string())
