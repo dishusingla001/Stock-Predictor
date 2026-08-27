@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -151,3 +152,35 @@ for stock in stocks:
 
     print("\nClassification Report:")
     print(classification_report(y_test, y_pred, zero_division=0))
+
+    # ==========================================
+    # Random Forest
+    # ==========================================
+
+    random_forest_model = RandomForestClassifier(
+        n_estimators=200,
+        max_depth=10,
+        min_samples_split=10,
+        min_samples_leaf=4,
+        random_state=42,
+        n_jobs=-1
+    )
+
+    random_forest_model.fit(X_train, y_train)
+
+    rf_pred = random_forest_model.predict(X_test)
+    rf_probability = random_forest_model.predict_proba(X_test)
+    rf_up_probability = rf_probability[:, 1]
+
+    print("\n========== RANDOM FOREST ==========")
+    print(f"Accuracy : {accuracy_score(y_test, rf_pred):.4f}")
+    print(f"Precision: {precision_score(y_test, rf_pred, zero_division=0):.4f}")
+    print(f"Recall   : {recall_score(y_test, rf_pred, zero_division=0):.4f}")
+    print(f"F1 Score : {f1_score(y_test, rf_pred, zero_division=0):.4f}")
+    print(f"ROC-AUC  : {roc_auc_score(y_test, rf_up_probability):.4f}")
+
+    print("\nConfusion Matrix:")
+    print(confusion_matrix(y_test, rf_pred))
+
+    print("\nClassification Report:")
+    print(classification_report(y_test, rf_pred, zero_division=0))
