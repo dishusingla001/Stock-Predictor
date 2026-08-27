@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -184,3 +185,36 @@ for stock in stocks:
 
     print("\nClassification Report:")
     print(classification_report(y_test, rf_pred, zero_division=0))
+
+    # ==========================================
+    # XGBoost
+    # ==========================================
+
+    xgb_model = XGBClassifier(
+        n_estimators=200,
+        max_depth=4,
+        learning_rate=0.05,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        random_state=42,
+        eval_metric="logloss"
+    )
+
+    xgb_model.fit(X_train, y_train)
+
+    xgb_pred = xgb_model.predict(X_test)
+    xgb_probability = xgb_model.predict_proba(X_test)
+    xgb_up_probability = xgb_probability[:, 1]
+
+    print("\n========== XGBOOST ==========")
+    print(f"Accuracy : {accuracy_score(y_test, xgb_pred):.4f}")
+    print(f"Precision: {precision_score(y_test, xgb_pred, zero_division=0):.4f}")
+    print(f"Recall   : {recall_score(y_test, xgb_pred, zero_division=0):.4f}")
+    print(f"F1 Score : {f1_score(y_test, xgb_pred, zero_division=0):.4f}")
+    print(f"ROC-AUC  : {roc_auc_score(y_test, xgb_up_probability):.4f}")
+
+    print("\nConfusion Matrix:")
+    print(confusion_matrix(y_test, xgb_pred))
+
+    print("\nClassification Report:")
+    print(classification_report(y_test, xgb_pred, zero_division=0))
