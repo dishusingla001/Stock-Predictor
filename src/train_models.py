@@ -1,4 +1,6 @@
 import pandas as pd
+import joblib
+import os
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
@@ -38,11 +40,13 @@ stocks = [
 ]
 
 results = []
+trained_models = {}
+scalers = {}
 
 tscv = TimeSeriesSplit(n_splits=5)
 
 rf_param_grid = {
-    "n_estimators": [100, 200, 300, 500],
+    "n_estimators": [100],
     "max_depth": [None, 5, 10, 15, 20],
     "min_samples_split": [2, 5, 10, 20],
     "min_samples_leaf": [1, 2, 4, 8],
@@ -50,7 +54,7 @@ rf_param_grid = {
 }
 
 xgb_param_grid = {
-    "n_estimators": [100, 200, 300, 500],
+    "n_estimators": [100],
     "max_depth": [2, 3, 4, 5, 6],
     "learning_rate": [0.01, 0.03, 0.05, 0.1],
     "subsample": [0.7, 0.8, 0.9, 1.0],
@@ -69,6 +73,26 @@ for stock in stocks:
 
     print("Dataset shape:", data.shape)
     print("Columns:", data.columns.tolist())
+
+    # ==========================================
+    # 5-DAY TARGET VERIFICATION
+    # ==========================================
+
+    print("\n========== 5-DAY TARGET VERIFICATION ==========")
+
+    print(data[["Date", "Close", "Future_Close", "Target"]].tail(10))
+
+    expected_target = (
+        data["Future_Close"] > data["Close"]
+    ).astype(int)
+
+    print(
+        "Target matches 5-day calculation:",
+        (data["Target"] == expected_target).all()
+    )
+
+    print("\nTarget distribution:")
+    print(data["Target"].value_counts())
 
     # ==========================================
     # Separate Features and Target
@@ -94,6 +118,7 @@ for stock in stocks:
     # ==========================================
 
     scaler = StandardScaler()
+    scalers[stock] = scaler
 
     # Fit only on training data
     X_train_scaled = scaler.fit_transform(X_train)
@@ -154,6 +179,7 @@ for stock in stocks:
     )
 
     logistic_model.fit(X_train_scaled, y_train)
+    trained_models.setdefault(stock, {})["Logistic Regression"] = logistic_model
 
     # ==========================================
     # Predictions and Evaluation
@@ -196,7 +222,7 @@ for stock in stocks:
             n_jobs=1
         ),
         param_distributions=rf_param_grid,
-        n_iter=3,
+        n_iter=1,
         scoring="roc_auc",
         cv=tscv,
         random_state=42,
@@ -206,6 +232,7 @@ for stock in stocks:
 
     random_forest_search.fit(X_train, y_train)
     random_forest_model = random_forest_search.best_estimator_
+    trained_models.setdefault(stock, {})["Random Forest"] = random_forest_model
 
     print("\n========== RANDOM FOREST TUNING ==========")
     print("Best CV ROC-AUC:", f"{random_forest_search.best_score_:.4f}")
@@ -249,7 +276,7 @@ for stock in stocks:
             n_jobs=1
         ),
         param_distributions=xgb_param_grid,
-        n_iter=3,
+        n_iter=1,
         scoring="roc_auc",
         cv=tscv,
         random_state=42,
@@ -259,6 +286,7 @@ for stock in stocks:
 
     xgb_search.fit(X_train, y_train)
     xgb_model = xgb_search.best_estimator_
+    trained_models.setdefault(stock, {})["XGBoost"] = xgb_model
 
     print("\n========== XGBOOST TUNING ==========")
     print("Best CV ROC-AUC:", f"{xgb_search.best_score_:.4f}")
@@ -318,6 +346,39 @@ best_models = (
     .first()
     .reset_index()
 )
+
+os.makedirs("models", exist_ok=True)
+model_metadata = []
+
+for _, best_model_row in best_models.iterrows():
+    stock = best_model_row["Stock"]
+    model_name = best_model_row["Model"]
+
+    joblib.dump(
+        trained_models[stock][model_name],
+        f"models/{stock}_model.joblib"
+    )
+    joblib.dump(
+        scalers[stock],
+        f"models/{stock}_scaler.joblib"
+    )
+
+    model_metadata.append({
+        "Stock": stock,
+        "Model": model_name,
+        "Features": ",".join(features),
+        "Horizon_Days": 5,
+        "Model_File": f"models/{stock}_model.joblib",
+        "Scaler_File": f"models/{stock}_scaler.joblib"
+    })
+
+metadata_df = pd.DataFrame(model_metadata)
+metadata_df.to_csv("models/model_metadata.csv", index=False)
+
+print("\n==========================================")
+print("             SAVED BEST MODELS")
+print("==========================================")
+print(metadata_df.to_string(index=False))
 
 print("\n==========================================")
 print("          BEST MODEL PER STOCK")

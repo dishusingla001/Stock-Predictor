@@ -1,0 +1,6 @@
+Stock,Model,Features,Horizon_Days,Model_File,Scaler_File
+HDFCBANK,XGBoost,"RSI,EMA20,EMA50,MACD,ROC,ATR,Volume",5,models/HDFCBANK_model.joblib,models/HDFCBANK_scaler.joblib
+ICICIBANK,Random Forest,"RSI,EMA20,EMA50,MACD,ROC,ATR,Volume",5,models/ICICIBANK_model.joblib,models/ICICIBANK_scaler.joblib
+INFY,XGBoost,"RSI,EMA20,EMA50,MACD,ROC,ATR,Volume",5,models/INFY_model.joblib,models/INFY_scaler.joblib
+RELIANCE,Logistic Regression,"RSI,EMA20,EMA50,MACD,ROC,ATR,Volume",5,models/RELIANCE_model.joblib,models/RELIANCE_scaler.joblib
+TCS,XGBoost,"RSI,EMA20,EMA50,MACD,ROC,ATR,Volume",5,models/TCS_model.joblib,models/TCS_scaler.joblib
