@@ -178,6 +178,13 @@ def create_features(stock_name):
     # Remove last 5 rows because future price does not exist for them
     data = data.iloc[:-5]
 
+    print("\n5-DAY TARGET CHECK:")
+    print(
+        data[
+            ["Date", "Close", "Future_Close", "Target"]
+        ].tail(10)
+    )
+
 
     # --------------------------------------
     # 8. Remove Missing Values
