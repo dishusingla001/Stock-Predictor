@@ -140,27 +140,54 @@ def create_features(stock_name):
 
 
     # --------------------------------------
-    # 6. Create Target Variable
+    # 6. Relative Position and Return Features
     # --------------------------------------
 
-    data["Future_Close"] = (
-        data["Close"].shift(-5)
+    data["EMA20_EMA50_Ratio"] = (
+        data["EMA20"] / data["EMA50"]
     )
+
+    data["Close_EMA20_Ratio"] = (
+        data["Close"] / data["EMA20"]
+    )
+
+    data["Close_EMA50_Ratio"] = (
+        data["Close"] / data["EMA50"]
+    )
+
+    data["BB_Position"] = (
+        (data["Close"] - data["BB_lower"])
+        / (data["BB_upper"] - data["BB_lower"]).replace(0, pd.NA)
+    )
+
+    data["Return_1D"] = data["Close"].pct_change()
+    data["Return_5D"] = data["Close"].pct_change(5)
+
+
+    # --------------------------------------
+    # 7. Target: 5-Day Direction
+    # --------------------------------------
+
+    # 5-day-ahead closing price
+    data["Future_Close"] = data["Close"].shift(-5)
 
     data["Target"] = (
         data["Future_Close"] > data["Close"]
     ).astype(int)
 
+    # Remove last 5 rows because future price does not exist for them
+    data = data.iloc[:-5]
+
 
     # --------------------------------------
-    # 7. Remove Missing Values
+    # 8. Remove Missing Values
     # --------------------------------------
 
     data.dropna(inplace=True)
 
 
     # --------------------------------------
-    # 8. Save Processed Data
+    # 9. Save Processed Data
     # --------------------------------------
 
     os.makedirs("data/processed", exist_ok=True)
@@ -217,31 +244,17 @@ for stock in stocks:
         f"data/processed/{stock}_features.csv"
     )
 
-    # 1. Create Target
-    # 1 = tomorrow's Close is higher
-    # 0 = tomorrow's Close is lower or equal
-    data["Target"] = (
-        data["Close"].shift(-1) > data["Close"]
-    ).astype(int)
-
-    # 2. Remove the final row
-    # because there is no tomorrow's price
-    data = data.iloc[:-1]
-
-    # 3. Remove rows containing NaN
-    # caused by technical indicators
+    # Remove rows where the future price is unavailable
     data = data.dropna()
 
-    # 4. Save ML-ready dataset
+    # Save ML-ready dataset
     data.to_csv(
         f"data/processed/{stock}_ML.csv",
         index=False
     )
 
-    # 5. Check the dataset
     print(f"\n========== {stock} ML DATASET ==========")
-    print(data.head())
-    print("\nDataset Shape:")
+    print("Dataset Shape:")
     print(data.shape)
     print("\nTarget Distribution:")
     print(data["Target"].value_counts())

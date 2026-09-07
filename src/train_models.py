@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import RandomizedSearchCV, TimeSeriesSplit
 from xgboost import XGBClassifier
 from sklearn.metrics import (
     accuracy_score,
@@ -37,6 +38,25 @@ stocks = [
 ]
 
 results = []
+
+tscv = TimeSeriesSplit(n_splits=5)
+
+rf_param_grid = {
+    "n_estimators": [100, 200, 300, 500],
+    "max_depth": [None, 5, 10, 15, 20],
+    "min_samples_split": [2, 5, 10, 20],
+    "min_samples_leaf": [1, 2, 4, 8],
+    "max_features": ["sqrt", "log2", None]
+}
+
+xgb_param_grid = {
+    "n_estimators": [100, 200, 300, 500],
+    "max_depth": [2, 3, 4, 5, 6],
+    "learning_rate": [0.01, 0.03, 0.05, 0.1],
+    "subsample": [0.7, 0.8, 0.9, 1.0],
+    "colsample_bytree": [0.7, 0.8, 0.9, 1.0],
+    "min_child_weight": [1, 3, 5, 10]
+}
 
 
 for stock in stocks:
@@ -170,16 +190,26 @@ for stock in stocks:
     # Random Forest
     # ==========================================
 
-    random_forest_model = RandomForestClassifier(
-        n_estimators=200,
-        max_depth=10,
-        min_samples_split=10,
-        min_samples_leaf=4,
+    random_forest_search = RandomizedSearchCV(
+        estimator=RandomForestClassifier(
+            random_state=42,
+            n_jobs=1
+        ),
+        param_distributions=rf_param_grid,
+        n_iter=3,
+        scoring="roc_auc",
+        cv=tscv,
         random_state=42,
-        n_jobs=-1
+        n_jobs=1,
+        refit=True
     )
 
-    random_forest_model.fit(X_train, y_train)
+    random_forest_search.fit(X_train, y_train)
+    random_forest_model = random_forest_search.best_estimator_
+
+    print("\n========== RANDOM FOREST TUNING ==========")
+    print("Best CV ROC-AUC:", f"{random_forest_search.best_score_:.4f}")
+    print("Best parameters:", random_forest_search.best_params_)
 
     rf_pred = random_forest_model.predict(X_test)
     rf_probability = random_forest_model.predict_proba(X_test)
@@ -212,17 +242,27 @@ for stock in stocks:
     # XGBoost
     # ==========================================
 
-    xgb_model = XGBClassifier(
-        n_estimators=200,
-        max_depth=4,
-        learning_rate=0.05,
-        subsample=0.8,
-        colsample_bytree=0.8,
+    xgb_search = RandomizedSearchCV(
+        estimator=XGBClassifier(
+            random_state=42,
+            eval_metric="logloss",
+            n_jobs=1
+        ),
+        param_distributions=xgb_param_grid,
+        n_iter=3,
+        scoring="roc_auc",
+        cv=tscv,
         random_state=42,
-        eval_metric="logloss"
+        n_jobs=1,
+        refit=True
     )
 
-    xgb_model.fit(X_train, y_train)
+    xgb_search.fit(X_train, y_train)
+    xgb_model = xgb_search.best_estimator_
+
+    print("\n========== XGBOOST TUNING ==========")
+    print("Best CV ROC-AUC:", f"{xgb_search.best_score_:.4f}")
+    print("Best parameters:", xgb_search.best_params_)
 
     xgb_pred = xgb_model.predict(X_test)
     xgb_probability = xgb_model.predict_proba(X_test)
