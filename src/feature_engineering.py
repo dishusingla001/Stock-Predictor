@@ -168,15 +168,22 @@ def create_features(stock_name):
     # 7. Target: 5-Day Direction
     # --------------------------------------
 
-    # 5-day-ahead closing price
-    data["Future_Close"] = data["Close"].shift(-5)
+    # Keep the newest raw row for inference before creating future labels.
+    # Do not silently fall back to an older row if its indicators are invalid.
+    prediction_data = data.tail(1).copy()
+    prediction_data = prediction_data.replace([float("inf"), -float("inf")], float("nan"))
+    if prediction_data.empty or prediction_data.isna().any().any():
+        raise ValueError(
+            f"{stock_name}: latest raw row has missing or invalid indicators; "
+            "check the raw data and available history."
+        )
 
+    # Shift on the complete trading history before filtering training rows.
+    data["Future_Close"] = data["Close"].shift(-5)
+    data = data.loc[data["Future_Close"].notna()].copy()
     data["Target"] = (
         data["Future_Close"] > data["Close"]
     ).astype(int)
-
-    # Remove last 5 rows because future price does not exist for them
-    data = data.iloc[:-5]
 
     print("\n5-DAY TARGET CHECK:")
     print(
@@ -198,6 +205,11 @@ def create_features(stock_name):
     # --------------------------------------
 
     os.makedirs("data/processed", exist_ok=True)
+
+    prediction_file = f"data/processed/{stock_name}_prediction.csv"
+    prediction_data.to_csv(prediction_file, index=False)
+    print(f"Saved prediction data: {prediction_file}")
+    print(f"Prediction date: {prediction_data['Date'].iloc[0].date()}")
 
     output_file = (
         f"data/processed/{stock_name}_features.csv"

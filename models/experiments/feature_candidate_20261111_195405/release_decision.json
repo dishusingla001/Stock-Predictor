@@ -1,0 +1,8 @@
+{
+  "Accepted": false,
+  "Previous_Mean_Accuracy": 0.5324577861163228,
+  "Candidate_Mean_Accuracy": 0.502063789868668,
+  "Rule": "Reject the entire candidate set if mean historical test accuracy declines; no per-stock cherry-picking.",
+  "Candidate_Directory": "D:\\5TH SEM\\AI-Ml\\Stock Predictor\\models\\experiments\\feature_candidate_20261111_195405",
+  "Previous_Snapshot": "D:\\5TH SEM\\AI-Ml\\Stock Predictor\\models\\experiments\\before_feature_run_20261111_192153"
+}

@@ -2,6 +2,8 @@ import os
 
 import joblib
 import pandas as pd
+
+from model_features import metadata_features, metadata_threshold, prepare_features
 from sklearn.metrics import (
     accuracy_score,
     confusion_matrix,
@@ -28,15 +30,7 @@ stocks = [
     "ICICIBANK"
 ]
 
-features = [
-    "RSI",
-    "EMA20",
-    "EMA50",
-    "MACD",
-    "ROC",
-    "ATR",
-    "Volume"
-]
+
 
 TEST_DAYS = 100
 
@@ -68,7 +62,7 @@ for stock in stocks:
         f"{stock}_ML.csv"
     )
 
-    data = pd.read_csv(data_path)
+    data = prepare_features(pd.read_csv(data_path))
     data["Date"] = pd.to_datetime(data["Date"])
     data = data.sort_values("Date").reset_index(drop=True)
 
@@ -82,6 +76,8 @@ for stock in stocks:
     )
 
     model_name = metadata.loc[stock, "Model"]
+    features = metadata_features(metadata.loc[stock])
+    threshold = metadata_threshold(metadata.loc[stock])
     model = joblib.load(model_path)
     scaler = joblib.load(scaler_path)
 
@@ -104,8 +100,8 @@ for stock in stocks:
         else:
             X_input = X
 
-        prediction = model.predict(X_input)[0]
         probability = model.predict_proba(X_input)[0]
+        prediction = int(probability[1] >= threshold)
 
         predictions.append(prediction)
         probabilities.append(

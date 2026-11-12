@@ -3,6 +3,8 @@ import os
 import joblib
 import pandas as pd
 
+from model_features import metadata_features, metadata_threshold, prepare_features
+
 
 # =========================
 # CONFIGURATION
@@ -21,15 +23,7 @@ stocks = [
     "ICICIBANK"
 ]
 
-features = [
-    "RSI",
-    "EMA20",
-    "EMA50",
-    "MACD",
-    "ROC",
-    "ATR",
-    "Volume"
-]
+
 
 
 # =========================
@@ -50,15 +44,17 @@ for stock in stocks:
 
     data_path = os.path.join(
         PROCESSED_DIR,
-        f"{stock}_ML.csv"
+        f"{stock}_prediction.csv"
     )
 
-    data = pd.read_csv(data_path)
+    data = prepare_features(pd.read_csv(data_path))
     data["Date"] = pd.to_datetime(data["Date"])
     data = data.sort_values("Date")
 
     latest = data.iloc[-1]
     model_info = metadata.loc[stock]
+    features = metadata_features(model_info)
+    threshold = metadata_threshold(model_info)
 
     model_path = os.path.join(BASE_DIR, model_info["Model_File"])
     scaler_path = os.path.join(BASE_DIR, model_info["Scaler_File"])
@@ -77,8 +73,8 @@ for stock in stocks:
     else:
         X_input = X_latest
 
-    prediction = model.predict(X_input)[0]
     probabilities = model.predict_proba(X_input)[0]
+    prediction = int(probabilities[1] >= threshold)
 
     down_probability = probabilities[0]
     up_probability = probabilities[1]
@@ -107,6 +103,7 @@ for stock in stocks:
         "Close": latest["Close"],
         "Model": model_info["Model"],
         "Prediction": direction,
+        "Decision_Threshold": threshold,
         "Probability": probability,
         "UP_Probability": up_probability,
         "DOWN_Probability": down_probability
@@ -150,4 +147,4 @@ print(output_path)
 
 print("\nNOTE:")
 print("These predictions use the latest date")
-print("available in your processed dataset.")
+print("available in your raw dataset when features were generated.")
