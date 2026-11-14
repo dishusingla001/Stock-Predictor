@@ -1,0 +1,33 @@
+{
+  "Block_Rows": 126,
+  "Minimum_Training_Rows": 126,
+  "Horizon_Trading_Rows": 5,
+  "Policies": {
+    "frozen": null,
+    "expanding": null,
+    "rolling_3y": 3,
+    "rolling_5y": 5
+  },
+  "Selection": "Validation accuracy; balanced accuracy, stability, then ROC-AUC break ties.",
+  "Features_Parameters_Thresholds": "Fixed to active metadata; no retuning in this experiment.",
+  "Outcome_Availability": "Raw target date must be strictly before each block's prediction origin.",
+  "Test_Use": "Selected policy plus predeclared frozen and expanding controls; no selection from test.",
+  "Deployment": "Experiment only; active artifacts are not replaced.",
+  "Caveat": "Historical test was examined previously. Results are retrospective. No new data downloaded.",
+  "Active_SHA256": {
+    "models\\HDFCBANK_model.joblib": "a03812ae97eb288835c400a8b9a466d53f83c84e408a1fa2cf365893c646ea50",
+    "models\\HDFCBANK_scaler.joblib": "f965779c15fa36b39cfaa7e51b9b3f1788c2193db9fba3757abefb97fe6421eb",
+    "models\\ICICIBANK_model.joblib": "54d248492c00308e1fb321f44e9f1d2a71379126a9722302f66c65d22c108dc5",
+    "models\\ICICIBANK_scaler.joblib": "bf7139b9274fb48a1a6aa026631ca60ffad25f7bd6dcf52e0b7889aa92eb6d26",
+    "models\\INFY_model.joblib": "1e7984da8c027070ba01f41663970b1e845c2f22ba9524b0f96c0272fbc6caf0",
+    "models\\INFY_scaler.joblib": "aae879b789524c29b3e91e0f172474be3e53efc88a1c5b5d4cf101dcfd476a0b",
+    "models\\RELIANCE_model.joblib": "8af25d24659ffdea9ca307691433bf8c453a79532a0a172b09a79fa3a7bad078",
+    "models\\RELIANCE_scaler.joblib": "920251e32b2c7af43485fde01a6e2fa7bf5e6dcf69d3147270f9341f9ad1019a",
+    "models\\TCS_model.joblib": "d9aae8a2972b750f03934c613e3efe599e93c0304fea2506a43ae6a1dda91725",
+    "models\\TCS_scaler.joblib": "bef002d76ac9ce7b96558e80a61d48e1b4df413452434ab6196303ae7ed4fb6c",
+    "models\\model_metadata.csv": "65a856b3d801c53891f8150365317663f96b21dc171e627f016bbfce08ba4566",
+    "data\\processed\\predictions.csv": "da8a03fc62e279c1bcd0b78eeedcbd873b480fc3a0b3edd73b184e95452b6058",
+    "data\\processed\\verification_results.csv": "6c2f0283b939079b3075f8d9a00d5030fef026ec6c68395f0cc323f60ccbe287",
+    "data\\processed\\test_results.csv": "121da3db519af8592b47e3e56a81ead5995704328daf3a83f3863ffe2b233b55"
+  }
+}

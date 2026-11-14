@@ -1,0 +1,12 @@
+{
+  "Choices": {
+    "RELIANCE": "stock_only",
+    "TCS": "with_market_sector",
+    "HDFCBANK": "with_market_sector",
+    "INFY": "stock_only",
+    "ICICIBANK": "with_market"
+  },
+  "Selected_From": "Validation",
+  "Frozen_Before_Any_Test": true,
+  "New_2026_Data_Used_For_Selection": false
+}

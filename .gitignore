@@ -16,3 +16,14 @@ env/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Anonymous Yahoo Finance runtime cache
+data/market_context_*/yahoo_cache/
+
+# Frontend dependencies, build output, and browser-test artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/test-results/
+frontend/playwright-report/
+frontend/.env.local
+frontend/.sites-runtime/

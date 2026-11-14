@@ -1,0 +1,11 @@
+{
+  "Choices": {
+    "RELIANCE": "rolling_3y",
+    "TCS": "expanding",
+    "HDFCBANK": "rolling_3y",
+    "INFY": "expanding",
+    "ICICIBANK": "frozen"
+  },
+  "Selection_Period": "Validation",
+  "Selection_Complete_Before_Test": true
+}

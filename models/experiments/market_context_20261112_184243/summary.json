@@ -1,0 +1,35 @@
+{
+  "Choices": {
+    "RELIANCE": "stock_only",
+    "TCS": "with_market_sector",
+    "HDFCBANK": "with_market_sector",
+    "INFY": "stock_only",
+    "ICICIBANK": "with_market"
+  },
+  "Active_Artifacts_Unchanged": true,
+  "New_Data_End": "2026-11-11",
+  "Results": {
+    "Historical_Test": {
+      "Stock_Only_Mean_Accuracy": 0.5212945121081709,
+      "Selected_Mean_Accuracy": 0.5262094459456002,
+      "Change_Percentage_Points": 0.49149338374291246,
+      "Majority_Baseline_Mean_Accuracy": 0.5420533615119949,
+      "Improved_Stocks": 1,
+      "Evaluation_Start": "2023-10-27",
+      "Evaluation_End": "2025-12-23",
+      "Selected_Mean_Balanced_Accuracy": 0.5225729577105033,
+      "Selected_Mean_ROC_AUC": 0.5523598514859953
+    },
+    "New_2026_Test": {
+      "Stock_Only_Mean_Accuracy": 0.45295442730895863,
+      "Selected_Mean_Accuracy": 0.46477708740748075,
+      "Change_Percentage_Points": 1.1822660098522175,
+      "Majority_Baseline_Mean_Accuracy": 0.4302943287867911,
+      "Improved_Stocks": 1,
+      "Evaluation_Start": "2026-01-01",
+      "Evaluation_End": "2026-11-03",
+      "Selected_Mean_Balanced_Accuracy": 0.5068980046930796,
+      "Selected_Mean_ROC_AUC": 0.5619826198536997
+    }
+  }
+}

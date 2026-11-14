@@ -1,0 +1,17 @@
+{
+  "Static_Mean_Accuracy": 0.5324577861163228,
+  "Expanding_Mean_Accuracy": 0.5335834896810507,
+  "Selected_Mean_Accuracy": 0.5223264540337711,
+  "Accuracy_Change_Percentage_Points": -1.0131332082551605,
+  "Improved_Stocks": 3,
+  "Choices": {
+    "RELIANCE": "rolling_3y",
+    "TCS": "expanding",
+    "HDFCBANK": "rolling_3y",
+    "INFY": "expanding",
+    "ICICIBANK": "frozen"
+  },
+  "Active_Artifacts_Unchanged": true,
+  "Deployment": "Not promoted; periodic retraining policy requires matching inference/verification support.",
+  "Data_End": "2025-12-31"
+}

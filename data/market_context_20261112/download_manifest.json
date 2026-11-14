@@ -1,0 +1,86 @@
+{
+  "As_Of_Exclusive": "2026-11-12",
+  "Records": [
+    {
+      "Name": "RELIANCE",
+      "Yahoo_Ticker": "RELIANCE.NS",
+      "Rows": 2928,
+      "Start": "2015-01-01",
+      "End": "2026-11-11",
+      "SHA256": "1ffde14574b36e6834c7c17a4b9025572b9150d431b656842fd1f44ca18f7519",
+      "Source": "https://finance.yahoo.com/quote/RELIANCE.NS/history/"
+    },
+    {
+      "Name": "TCS",
+      "Yahoo_Ticker": "TCS.NS",
+      "Rows": 2928,
+      "Start": "2015-01-01",
+      "End": "2026-11-11",
+      "SHA256": "cfa1332619b7fc1c5eb8f170f80c30c20eee0226ccaf1e38a17baaf5ca2899e7",
+      "Source": "https://finance.yahoo.com/quote/TCS.NS/history/"
+    },
+    {
+      "Name": "HDFCBANK",
+      "Yahoo_Ticker": "HDFCBANK.NS",
+      "Rows": 2928,
+      "Start": "2015-01-01",
+      "End": "2026-11-11",
+      "SHA256": "95baac845d90c564e841c4c097328073b389cd3ceab88462001f698533567ced",
+      "Source": "https://finance.yahoo.com/quote/HDFCBANK.NS/history/"
+    },
+    {
+      "Name": "INFY",
+      "Yahoo_Ticker": "INFY.NS",
+      "Rows": 2928,
+      "Start": "2015-01-01",
+      "End": "2026-11-11",
+      "SHA256": "5443a6bcf405097ed9c0dd3504bb9759800249a2b2b43c5729a2315226eedab2",
+      "Source": "https://finance.yahoo.com/quote/INFY.NS/history/"
+    },
+    {
+      "Name": "ICICIBANK",
+      "Yahoo_Ticker": "ICICIBANK.NS",
+      "Rows": 2928,
+      "Start": "2015-01-01",
+      "End": "2026-11-11",
+      "SHA256": "1568cfdecce59be49a08475aed0b3792537dbca9346d72e722a03517ce23b0ea",
+      "Source": "https://finance.yahoo.com/quote/ICICIBANK.NS/history/"
+    },
+    {
+      "Name": "NIFTY50",
+      "Yahoo_Ticker": "^NSEI",
+      "Rows": 2919,
+      "Start": "2015-01-02",
+      "End": "2026-11-11",
+      "SHA256": "0caaec49e349d267577f66ca53cffbe58ababfd4abf1a47bd2b4994477a0f253",
+      "Source": "https://finance.yahoo.com/quote/^NSEI/history/"
+    },
+    {
+      "Name": "NIFTYBANK",
+      "Yahoo_Ticker": "^NSEBANK",
+      "Rows": 2924,
+      "Start": "2015-01-01",
+      "End": "2026-11-11",
+      "SHA256": "0fcf9d6c76bd933fb1435008a3676975db1bbfda260cc39effee8aad5ae8cd1c",
+      "Source": "https://finance.yahoo.com/quote/^NSEBANK/history/"
+    },
+    {
+      "Name": "NIFTYIT",
+      "Yahoo_Ticker": "^CNXIT",
+      "Rows": 2924,
+      "Start": "2015-01-01",
+      "End": "2026-11-11",
+      "SHA256": "1b952cf06071fe0660cca10fb0c8a5646b00d0ccf918c4e5efb1b8d482e96d3f",
+      "Source": "https://finance.yahoo.com/quote/^CNXIT/history/"
+    },
+    {
+      "Name": "NIFTYENERGY",
+      "Yahoo_Ticker": "^CNXENERGY",
+      "Rows": 2909,
+      "Start": "2015-01-01",
+      "End": "2026-11-11",
+      "SHA256": "541285371edf37189cef245a86265eb92801496844d13665ef85e6ed9a68c146",
+      "Source": "https://finance.yahoo.com/quote/^CNXENERGY/history/"
+    }
+  ]
+}

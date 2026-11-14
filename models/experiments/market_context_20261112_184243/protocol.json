@@ -1,0 +1,83 @@
+{
+  "As_Of_Exclusive": "2026-11-12",
+  "Data_Directory": "D:\\5TH SEM\\AI-Ml\\Stock Predictor\\data\\market_context_20261112",
+  "Sector_Map": {
+    "RELIANCE": "NIFTYENERGY",
+    "TCS": "NIFTYIT",
+    "INFY": "NIFTYIT",
+    "HDFCBANK": "NIFTYBANK",
+    "ICICIBANK": "NIFTYBANK"
+  },
+  "Variants": [
+    "stock_only",
+    "with_market",
+    "with_market_sector"
+  ],
+  "Validation": [
+    "2021-09-03",
+    "2023-10-18"
+  ],
+  "Historical_Test": [
+    "2023-10-27",
+    "2025-12-23"
+  ],
+  "New_2026_Test_Start": "2026-01-01",
+  "Selection": "Validation accuracy, balanced accuracy, ROC-AUC, then fewer features.",
+  "Controls": "Fixed active model family/parameters/threshold; all variants use matched dates and identical fitting history.",
+  "Target": "Close five stock trading sessions later, computed before filtering missing index dates.",
+  "Information_Timing": "After-close predictions. Index data joined on exact dates; no forward or backward filling.",
+  "Fresh_Test": "One frozen model per variant fitted only to targets resolved before 2026-01-01. No 2026 refitting or selection.",
+  "Coverage": "Missing context dates are reported and excluded for ALL variants; require at least 95% coverage in each evaluation period.",
+  "Test_Ablation": "All three predeclared feature sets are scored for diagnosis. Test scores never switch the validation choice.",
+  "Deployment": "Isolated experiment; active datasets, reports, and models are preserved.",
+  "Input_SHA256": {
+    "RELIANCE": "1ffde14574b36e6834c7c17a4b9025572b9150d431b656842fd1f44ca18f7519",
+    "TCS": "cfa1332619b7fc1c5eb8f170f80c30c20eee0226ccaf1e38a17baaf5ca2899e7",
+    "HDFCBANK": "95baac845d90c564e841c4c097328073b389cd3ceab88462001f698533567ced",
+    "INFY": "5443a6bcf405097ed9c0dd3504bb9759800249a2b2b43c5729a2315226eedab2",
+    "ICICIBANK": "1568cfdecce59be49a08475aed0b3792537dbca9346d72e722a03517ce23b0ea",
+    "NIFTY50": "0caaec49e349d267577f66ca53cffbe58ababfd4abf1a47bd2b4994477a0f253",
+    "NIFTYBANK": "0fcf9d6c76bd933fb1435008a3676975db1bbfda260cc39effee8aad5ae8cd1c",
+    "NIFTYIT": "1b952cf06071fe0660cca10fb0c8a5646b00d0ccf918c4e5efb1b8d482e96d3f",
+    "NIFTYENERGY": "541285371edf37189cef245a86265eb92801496844d13665ef85e6ed9a68c146"
+  },
+  "Active_SHA256": {
+    "models\\HDFCBANK_model.joblib": "a03812ae97eb288835c400a8b9a466d53f83c84e408a1fa2cf365893c646ea50",
+    "models\\HDFCBANK_scaler.joblib": "f965779c15fa36b39cfaa7e51b9b3f1788c2193db9fba3757abefb97fe6421eb",
+    "models\\ICICIBANK_model.joblib": "54d248492c00308e1fb321f44e9f1d2a71379126a9722302f66c65d22c108dc5",
+    "models\\ICICIBANK_scaler.joblib": "bf7139b9274fb48a1a6aa026631ca60ffad25f7bd6dcf52e0b7889aa92eb6d26",
+    "models\\INFY_model.joblib": "1e7984da8c027070ba01f41663970b1e845c2f22ba9524b0f96c0272fbc6caf0",
+    "models\\INFY_scaler.joblib": "aae879b789524c29b3e91e0f172474be3e53efc88a1c5b5d4cf101dcfd476a0b",
+    "models\\RELIANCE_model.joblib": "8af25d24659ffdea9ca307691433bf8c453a79532a0a172b09a79fa3a7bad078",
+    "models\\RELIANCE_scaler.joblib": "920251e32b2c7af43485fde01a6e2fa7bf5e6dcf69d3147270f9341f9ad1019a",
+    "models\\TCS_model.joblib": "d9aae8a2972b750f03934c613e3efe599e93c0304fea2506a43ae6a1dda91725",
+    "models\\TCS_scaler.joblib": "bef002d76ac9ce7b96558e80a61d48e1b4df413452434ab6196303ae7ed4fb6c",
+    "models\\model_metadata.csv": "65a856b3d801c53891f8150365317663f96b21dc171e627f016bbfce08ba4566",
+    "data\\raw\\HDFCBANK.csv": "024d4674fc546d27c3b7a4e5f268d68f601c9c9ff7b85890990a7f242d8d1077",
+    "data\\raw\\ICICIBANK.csv": "f1f7b8e81997dbd7b828d4bbbaab7b3f1968a64d098ea17c89f1bc81c800f8b2",
+    "data\\raw\\INFY.csv": "feb65e3fef5dc9af2ad9676d96736c2a09f5dd9d7aa47c00cd8e5df8b359fa85",
+    "data\\raw\\RELIANCE.csv": "81b734ad570db1faca52854169e68a1d09f1b66a7177f29e85c6dd5d1c09a5f8",
+    "data\\raw\\TCS.csv": "04b0d21e56554effb4236f65b63870780fa110e59b2d7158c84e98a63f75f999",
+    "data\\processed\\HDFCBANK_features.csv": "c2ccde29468154ff155570c9398837f544a8a2fb8acd3cec90982123353f0cd3",
+    "data\\processed\\HDFCBANK_ML.csv": "84378b712b98b2c2a2185caddf257a76d2e606be80f7cfa59f3574eb7a09a95c",
+    "data\\processed\\HDFCBANK_prediction.csv": "cead262c6297a129897bb376bcd5c2c5ef73ff9beb875259c672037fc2657935",
+    "data\\processed\\ICICIBANK_features.csv": "ac94eb8828fe2a418ef0097b6248ee2e59e056107c59f9490a995a7160c86b78",
+    "data\\processed\\ICICIBANK_ML.csv": "8ea32d83d678e86266ab0c8f969f8cbc4daafda63083c8d230adb4fd43b1c924",
+    "data\\processed\\ICICIBANK_prediction.csv": "d665f6f91a567232be6e300df381c0d5e45cdfdc3a71856e92a51feb36c3150b",
+    "data\\processed\\INFY_features.csv": "a4105edb5a9e4ba1fd1441f6339d9e16301f2c4735d6573eb7798195b634e980",
+    "data\\processed\\INFY_ML.csv": "f15df1a9eed2f92869c4ac932d992afdf338d4a9cefd3ac77d8c78861830443c",
+    "data\\processed\\INFY_prediction.csv": "3067f086fd26c0932d0cbb301acef1e71d1e82ce03580dce022368bad6e1459b",
+    "data\\processed\\model_results.csv": "807bbcbd9c8621ea2703b193cc4a75758432f8032636aadf475249d40f71cfe9",
+    "data\\processed\\predictions.csv": "da8a03fc62e279c1bcd0b78eeedcbd873b480fc3a0b3edd73b184e95452b6058",
+    "data\\processed\\RELIANCE_features.csv": "b4f2959adb424bcf6dca513010118a776aea0a65119f21ad2f522969e0820c91",
+    "data\\processed\\RELIANCE_ML.csv": "d4ed154e5e1fb47b4252955d22f4e3c22c4235ff8cc70250ef5daec951e1c0da",
+    "data\\processed\\RELIANCE_prediction.csv": "113faf9d38c70969fe48ccb731cac8df8f3119c33dfcbb98c247ed9a39948f1c",
+    "data\\processed\\split_periods.csv": "a3dd52cdd992e7bc5a6d817b9079a24d4d073e567d4a8e1867baf5cc73a347d0",
+    "data\\processed\\TCS_features.csv": "bcf3cbdaf7eab7628ec7923c785e1488f3713016bd49a991b66112a145863e5e",
+    "data\\processed\\TCS_ML.csv": "65de061acc5fd17739461b96a24921a3d81ec18bbf291191a1102db3f1df127c",
+    "data\\processed\\TCS_prediction.csv": "e026c898f869a1a9084721c1202278bf6ffd790cd9f4c874a4a5cdca04464c05",
+    "data\\processed\\test_results.csv": "121da3db519af8592b47e3e56a81ead5995704328daf3a83f3863ffe2b233b55",
+    "data\\processed\\tuning_results.csv": "584e52731ee340c380a878060dc992cbbe46da6fce9a5b30b28df189353eb6be",
+    "data\\processed\\verification_results.csv": "6c2f0283b939079b3075f8d9a00d5030fef026ec6c68395f0cc323f60ccbe287"
+  }
+}
